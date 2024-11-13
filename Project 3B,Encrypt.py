@@ -1,3 +1,5 @@
+# This script is the part of the project where I implements a basic encryption method using XOR
+
 def encrypt_file():
     try:
         file = input("Enter the file you want to encrypt: ")
