@@ -1,24 +1,39 @@
-file = input("Enter the file you want to decrypt: ")
-name = input("Enter the name of file you want to write to: ")
-key = int(input("Enter the key for your decryption: "))
+# Here, I implement a decryption method to reverse the encryption process applied in the project 3B,Encrypt.py part.
+def decrypt_file():
+    try:
+        file = input("Enter the file you want to decrypt: ")
+        name = input("Enter the name of the output file: ")
+        key = int(input("Enter the key for your decryption (0-255): "))
 
-f = open(file, "r")  ###opens and read file
-w = open(name,"w")   ### name of file to decrypt to
+        if not (0 <= key <= 255):
+            print("Error: Key must be between 0 and 255.")
+            return
 
-for line in f:
-    for i in range(len(line)):       ### it goes through every character in the line
-        char = line[i]
-        if char == "~":
-            2+2==4             ###do nothing, just to avoid indentation syntax error 
-        elif line[i-1] == "~":   ###character before this was a ~ 
-            x = ord(char)        
-            x = x ^ key
-            newChar = chr(x)
-            w.write(newChar)     ### write decrypted character
-        else:
-            w.write(char)
+        with open(file, "r") as f, open(name, "w") as w:
+            for line in f:
+                i = 0
+                while i < len(line):
+                    char = line[i]
+                    if char == "~":
+                        i += 1  # Skip the "~" character
+                        if i < len(line):
+                            encrypted_char = line[i]
+                            x = ord(encrypted_char)  # Geting Unicode value
+                            x = x ^ key             # XOR with the decryption key
+                            newChar = chr(x)        # Converting back to character
+                            w.write(newChar)
+                    else:
+                        w.write(char)
+                    i += 1
 
-f.close()
-w.close()        ###Closes the program           
+        print(f"Decryption completed. Output written to '{name}'.") # shows end of decryption
+
+    except FileNotFoundError:
+        print("Error: The specified input file does not exist.")
+    except ValueError:
+        print("Error: Invalid key. Please enter an integer value.")
+
+decrypt_file()
+       
               
 
